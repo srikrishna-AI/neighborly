@@ -18,7 +18,7 @@ from app.models.base import Base
 config = context.config
 
 # Set the sqlalchemy.url dynamically using settings loaded from .env
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.normalized_database_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -60,10 +60,16 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
+    db_url = config.get_main_option("sqlalchemy.url")
+    connect_args = {}
+    if "ssl-mode=" in db_url or "aivencloud.com" in db_url:
+        connect_args["ssl"] = {"ssl_mode": "REQUIRED"}
+
+    from sqlalchemy import create_engine
+    connectable = create_engine(
+        db_url,
         poolclass=pool.NullPool,
+        connect_args=connect_args
     )
 
     with connectable.connect() as connection:
