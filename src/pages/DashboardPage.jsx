@@ -59,7 +59,6 @@ const DashboardPage = () => {
   // Analytics Stats
   const completedBorrows = sentRequests.filter(r => r.status === 'returned').length;
   const completedLends = receivedRequests.filter(r => r.status === 'returned').length;
-  const estimatedSavings = (completedBorrows + completedLends) * 25; // Estimated $25 saved per shared tool
 
   return (
     <div className="dashboard-container">
@@ -91,11 +90,6 @@ const DashboardPage = () => {
           <span className="stat-number">{favorites.length}</span>
           <span className="stat-sub">Saved to favorites</span>
         </div>
-        <div className="stat-card">
-          <h4>Est. Community Savings</h4>
-          <span className="stat-number text-emerald-400">${estimatedSavings}</span>
-          <span className="stat-sub">Saved vs buying new</span>
-        </div>
       </div>
 
       {/* Section Tabs: My Listings vs Saved Favorites */}
@@ -122,15 +116,15 @@ const DashboardPage = () => {
               <div className="listings-list-vertical">
                 {myListings.map((item) => (
                   <div key={item.id} className="dashboard-listing-item">
-                    <div className="listing-brief flex items-center gap-4">
+                    <div className="listing-brief">
                       {item.image_url ? (
-                        <img src={item.image_url} alt={item.title} className="w-14 h-14 object-cover rounded-md border border-glass" />
+                        <img src={item.image_url} alt={item.title} />
                       ) : (
                         <span className="text-2xl">{item.type === 'item' ? '🔧' : '💡'}</span>
                       )}
                       <div>
                         <h4>{item.title}</h4>
-                        <div className="flex gap-2 items-center text-xs text-muted mt-1">
+                        <div className="listing-meta">
                           <span className="badge badge-category py-0.5">{item.category?.name}</span>
                           <span>{item.type === 'item' ? `${item.quantity || 1} units` : 'Skill'}</span>
                           <span>· {item.price_per_day > 0 ? `$${item.price_per_day}/day` : 'Free'}</span>
@@ -147,7 +141,7 @@ const DashboardPage = () => {
                       </Link>
                       <button
                         onClick={() => handleDeleteListing(item.id)}
-                        className="text-xs text-red-400 hover:text-red-300 font-semibold cursor-pointer"
+                        className="btn-delete-link"
                       >
                         Delete
                       </button>

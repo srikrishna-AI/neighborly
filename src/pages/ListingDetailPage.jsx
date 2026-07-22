@@ -244,75 +244,87 @@ const ListingDetailPage = () => {
                 </Link>
               </div>
             ) : (
-              <form onSubmit={handleBookingSubmit} className="booking-form">
-                {bookingSuccess && (
-                  <div className="success-banner mb-4">
-                    ✅ Request submitted! Wait for owner approval in <strong>My Requests</strong>.
-                  </div>
-                )}
+              <>
+                <form onSubmit={handleBookingSubmit} className="booking-form">
+                  {bookingSuccess && (
+                    <div className="success-banner mb-4">
+                      ✅ Request submitted! Wait for owner approval in <strong>My Requests</strong>.
+                    </div>
+                  )}
 
-                {bookingError && (
-                  <div className="error-banner mb-4">
-                    <span>⚠️ {bookingError}</span>
-                  </div>
-                )}
+                  {bookingError && (
+                    <div className="error-banner mb-4">
+                      <span>⚠️ {bookingError}</span>
+                    </div>
+                  )}
 
-                <div className="form-group">
-                  <label className="form-label" htmlFor="startDate">Start Date</label>
-                  <input
-                    type="date"
-                    className="form-input"
-                    id="startDate"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    disabled={bookingSubmitting || !isAvailable}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="endDate">End Date</label>
-                  <input
-                    type="date"
-                    className="form-input"
-                    id="endDate"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    disabled={bookingSubmitting || !isAvailable}
-                  />
-                </div>
-
-                {/* Quantity selector for item-level lending (only if listing has multiple units available) */}
-                {listing.type === 'item' && availQty > 1 && (
                   <div className="form-group">
-                    <label className="form-label" htmlFor="requestedQuantity">Quantity to Borrow</label>
-                    <select
-                      className="form-select"
-                      id="requestedQuantity"
-                      value={requestedQuantity}
-                      onChange={(e) => setRequestedQuantity(parseInt(e.target.value))}
+                    <label className="form-label" htmlFor="startDate">Start Date</label>
+                    <input
+                      type="date"
+                      className="form-input"
+                      id="startDate"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
                       disabled={bookingSubmitting || !isAvailable}
-                    >
-                      {Array.from({ length: availQty }, (_, i) => i + 1).map((val) => (
-                        <option key={val} value={val}>
-                          {val} {val === 1 ? 'unit' : 'units'}
-                        </option>
-                      ))}
-                    </select>
+                    />
                   </div>
-                )}
 
-                <button
-                  type="submit"
-                  className="btn-primary w-full"
-                  disabled={bookingSubmitting || !isAvailable}
-                >
-                  {!isAvailable
-                    ? 'Currently Unavailable'
-                    : bookingSubmitting
-                    ? 'Submitting...'
-                    : 'Request to Borrow'}
-                </button>
-              </form>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="endDate">End Date</label>
+                    <input
+                      type="date"
+                      className="form-input"
+                      id="endDate"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      disabled={bookingSubmitting || !isAvailable}
+                    />
+                  </div>
+
+                  {/* Quantity selector for item-level lending (only if listing has multiple units available) */}
+                  {listing.type === 'item' && availQty > 1 && (
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="requestedQuantity">Quantity to Borrow</label>
+                      <select
+                        className="form-select"
+                        id="requestedQuantity"
+                        value={requestedQuantity}
+                        onChange={(e) => setRequestedQuantity(parseInt(e.target.value))}
+                        disabled={bookingSubmitting || !isAvailable}
+                      >
+                        {Array.from({ length: availQty }, (_, i) => i + 1).map((val) => (
+                          <option key={val} value={val}>
+                            {val} {val === 1 ? 'unit' : 'units'}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="btn-primary w-full"
+                    disabled={bookingSubmitting || !isAvailable}
+                  >
+                    {!isAvailable
+                      ? 'Currently Unavailable'
+                      : bookingSubmitting
+                      ? 'Submitting...'
+                      : 'Request to Borrow'}
+                  </button>
+                </form>
+
+                <div className="mt-4 border-t border-glass pt-4">
+                  <Link
+                    to={user ? `/messages?user_id=${listing.owner_id}` : '/login'}
+                    className="btn-secondary w-full"
+                    style={{ display: 'block' }}
+                  >
+                    💬 Message Owner
+                  </Link>
+                </div>
+              </>
             )}
           </div>
         </div>

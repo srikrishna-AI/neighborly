@@ -22,6 +22,7 @@ const Navbar = () => {
             <>
               <Link to="/dashboard" className="navbar-link">Dashboard</Link>
               <Link to="/requests" className="navbar-link">My Requests</Link>
+              <Link to="/messages" className="navbar-link">Messages</Link>
               <Link to={`/users/${user.id}`} className="navbar-link">Profile</Link>
               <button onClick={handleLogout} className="btn-logout">
                 Log Out
