@@ -43,7 +43,7 @@ app.add_middleware(
 )
 
 # Mount static uploads directory
-UPLOAD_DIR = os.path.join(os.getcwd(), "public", "uploads")
+UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "uploads"))
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 

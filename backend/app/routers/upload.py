@@ -6,7 +6,7 @@ from app.models.user import User
 
 router = APIRouter(prefix="/upload", tags=["upload"])
 
-UPLOAD_DIR = os.path.join(os.getcwd(), "public", "uploads")
+UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "uploads"))
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("", status_code=status.HTTP_201_CREATED)
